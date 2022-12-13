@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask and jQuery Example</title>
+</head>
+<body>
+    <h1>Flask and jQuery Example</h1>
+
+    <form id="name-form">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name">
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="greeting"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $('#name-form').on('submit', function(event) {
+            event.preventDefault();
+
+            var name = $('#name').val();
+
+            $.post('/get-name', {name: name}, function(data) {
+                $('#greeting').text(data);
+            });
+        });
+    </script>
+</body>
+</html>
