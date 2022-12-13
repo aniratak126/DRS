@@ -4,14 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 ################################################################
 # SVI URADITE OVO U TERMINALU DA BI RADILA BAZA KADA POKRENETE
 # pip install flask_sqlalchemy
-# pip install mysqlclient
-# pip install mysql-python
-
-# AKO I DALJE NE RADI IDITE REDOM I DODAJTE JEDAN PO JEDAN DOK NE PRORADI
-# pip install pymysql
-# mysql-connector
-# mysql-connector-python
-# mysql-connector-python-rf
+# pip install
 #################################################################
 
 main = Flask(__name__)
@@ -21,9 +14,9 @@ main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 # Initializing the database
 db = SQLAlchemy(main)
 
-# ovo odkomentarisati samo ako ne postoji baza podataka
-# with main.app_context():
-#     db.create_all()
+# ovo odkomentarisati samo prvi put kada pokrecete (valjda)
+with main.app_context():
+    db.create_all()
 
 
 # Creating db model
@@ -32,7 +25,6 @@ class Database(db.Model):
     surname = db.Column(db.String(15), nullable=False)
     address = db.Column(db.String(30), nullable=False)
     city = db.Column(db.String(15), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
     country = db.Column(db.String(20), nullable=False)
     phone_number = db.Column(db.DateTime, nullable=False, unique=True)
     date = db.Column(db.DateTime, nullable=False)
