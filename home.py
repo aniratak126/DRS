@@ -18,7 +18,7 @@ with main.app_context():
 
 
 # Creating db model
-class Database(db.Model):
+class Users(db.Model):
     name = db.Column(db.String(15), nullable=False)
     surname = db.Column(db.String(15), nullable=False)
     address = db.Column(db.String(30), nullable=False)
