@@ -4,13 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 ################################################################
 # SVI URADITE OVO U TERMINALU DA BI RADILA BAZA KADA POKRENETE
 # pip install flask_sqlalchemy
-# pip install
 #################################################################
-
 main = Flask(__name__)
 
 main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-
 # Initializing the database
 db = SQLAlchemy(main)
 
