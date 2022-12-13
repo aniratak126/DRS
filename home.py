@@ -8,13 +8,14 @@ from flask_sqlalchemy import SQLAlchemy
 main = Flask(__name__)
 
 main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 # Initializing the database
 db = SQLAlchemy(main)
 
 # ovo odkomentarisati samo prvi put kada pokrecete (valjda)
 # i onda bi trebalo da vam se pojavi folder instance u kome je users.db
-with main.app_context():
-    db.create_all()
+# with main.app_context():
+#     db.create_all()
 
 
 # Creating db model
@@ -52,21 +53,21 @@ def reg():
 
 @main.route('/get_user', methods=['GET', 'POST'])
 def get_user():
-    name = request.form.get('name')
-    surname = request.form.get('surname')
-    address = request.form.get('address')
-    city = request.form.get('city')
-    country = request.form.get('country')
-    pnumber = request.form.get('pnumber')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    name_get = request.form.get('name')
+    surname_get = request.form.get('surname')
+    address_get = request.form.get('address')
+    city_get = request.form.get('city')
+    country_get = request.form.get('country')
+    pnumber_get = request.form.get('pnumber')
+    email_get = request.form.get('email')
+    password_get = request.form.get('password')
 
-    user = Users(name=name, surname=surname, address=address, city=city, country=country, phone_number=pnumber,
-                 email=email, password=password)
+    user = Users(name=name_get, surname=surname_get, address=address_get, city=city_get,
+                 country=country_get, phone_number=pnumber_get, email=email_get, password=password_get)
     db.session.add(user)
     db.session.commit()
-    return f'Hello, ' + name + ' ' + surname + ' ' + address + ' ' + city + ' ' + country + ' ' +\
-           pnumber + ' ' + email + ' ' + password
+    return f'Hello, ' + name_get + ' ' + surname_get + ' ' + address_get + ' ' + city_get + ' ' + country_get + ' ' +\
+           pnumber_get + ' ' + email_get + ' ' + password_get
 
 
 def run():
