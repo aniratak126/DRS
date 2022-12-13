@@ -1,32 +1,43 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from mysql import connector
 
+################################################################
 # SVI URADITE OVO U TERMINALU DA BI RADILA BAZA KADA POKRENETE
+# pip install flask_sqlalchemy
 # pip install mysqlclient
 # pip install mysql-python
 
 # AKO I DALJE NE RADI IDITE REDOM I DODAJTE JEDAN PO JEDAN DOK NE PRORADI
+# pip install pymysql
 # mysql-connector
 # mysql-connector-python
 # mysql-connector-python-rf
-
+#################################################################
 
 main = Flask(__name__)
 
-main.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/users'
+main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
 # Initializing the database
 db = SQLAlchemy(main)
 
-# dodaj ovde db.create_all()
+# ovo odkomentarisati samo ako ne postoji baza podataka
+# with main.app_context():
+#     db.create_all()
 
 
 # Creating db model
 class Database(db.Model):
     name = db.Column(db.String(15), nullable=False)
     surname = db.Column(db.String(15), nullable=False)
-    date = db.Column(db.DateTime)
-    email = db.Column(db.Email, primary_key=True)
+    address = db.Column(db.String(30), nullable=False)
+    city = db.Column(db.String(15), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    country = db.Column(db.String(20), nullable=False)
+    phone_number = db.Column(db.DateTime, nullable=False, unique=True)
+    date = db.Column(db.DateTime, nullable=False)
+    email = db.Column(db.String(30), primary_key=True, nullable=False)
+    password = db.Column(db.String(30), nullable=False)
 
 
 # Create a function to return a string when we add someone
