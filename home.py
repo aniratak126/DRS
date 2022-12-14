@@ -18,14 +18,13 @@ with main.app_context():
 
 
 # Creating db model
-class Database(db.Model):
+class Users(db.Model):
     name = db.Column(db.String(15), nullable=False)
     surname = db.Column(db.String(15), nullable=False)
     address = db.Column(db.String(30), nullable=False)
     city = db.Column(db.String(15), nullable=False)
     country = db.Column(db.String(20), nullable=False)
-    phone_number = db.Column(db.DateTime, nullable=False, unique=True)
-    date = db.Column(db.DateTime, nullable=False)
+    phone_number = db.Column(db.Integer, nullable=False, unique=True)
     email = db.Column(db.String(30), primary_key=True, nullable=False)
     password = db.Column(db.String(30), nullable=False)
 
@@ -38,7 +37,6 @@ def __repr__(self):
 @main.route('/')
 def index():
     return render_template('home.html')
-
 
 
 @main.route('/get-name', methods=['POST'])
@@ -63,10 +61,12 @@ def get_user():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    db.session.add
-    return f'Hello, ' + name + ' ' + surname + ' ' + address + ' ' + city + ' ' + country + ' ' + pnumber + ' ' + email + ' ' + password
-
-
+    user = Users(name=name, surname=surname, address=address, city=city, country=country, phone_number=pnumber,
+                 email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
+    return f'Hello, ' + name + ' ' + surname + ' ' + address + ' ' + city + ' ' + country + ' ' +\
+           pnumber + ' ' + email + ' ' + password
 
 
 def run():
