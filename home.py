@@ -40,15 +40,33 @@ def index():
     return render_template('home.html')
 
 
-@main.route('/register')
-def reg():
-    return render_template('register.html')
-
 
 @main.route('/get-name', methods=['POST'])
 def get_name():
     name = request.form.get('name')
     return 'Hello, ' + name
+
+
+@main.route('/register')
+def reg():
+    return render_template('register.html')
+
+
+@main.route('/get_user', methods=['GET', 'POST'])
+def get_user():
+    name = request.form.get('name')
+    surname = request.form.get('surname')
+    address = request.form.get('address')
+    city = request.form.get('city')
+    country = request.form.get('country')
+    pnumber = request.form.get('pnumber')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    db.session.add
+    return f'Hello, ' + name + ' ' + surname + ' ' + address + ' ' + city + ' ' + country + ' ' + pnumber + ' ' + email + ' ' + password
+
+
 
 
 def run():
