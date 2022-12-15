@@ -51,7 +51,7 @@
                 let address = $('#address').val();
                 let city = $('#city').val();
                 let country = $('#country').val();
-                let pnumber = $('#pnumber').val();
+                let phone_number = $('#phone_number').val();
                 let email = $('#email').val();
                 let password = $('#password').val();
 
@@ -62,7 +62,7 @@
                         address: address,
                         city: city,
                         country: country,
-                        pnumber: pnumber,
+                        phone_number: phone_number,
                         email: email,
                         password: password
                     }, function(data) {
@@ -85,12 +85,12 @@
                     + '<tr><th>Country:</th>'
                     + '<td><input type="text" id="country" name="country"/></td></tr>'
                     + '<tr><th>Phone number:</th>'
-                    + '<td><input type="number" id="pnumber" name="pnumber"/></td></tr>'
+                    + '<td><input type="number" id="phone_number" name="phone_number"/></td></tr>'
                     + '<tr><th>Email:</th>'
                     + '<td><input type="email" id="email" name="email"/></td></tr>'
                     + '<tr><th>Password:</th>'
                     + '<td><input type="password" id="password" name="password"/></td></tr>'
-                    + '<tr><td><input type="submit" value="Register me" class="btnRegister" id="btnRegister"  password="btnRegister" name="btnRegister" surname="btnRegister" city="btnRegister" email="btnRegister" country="btnRegister" pnumber="btnRegister"/>'
+                    + '<tr><td><input type="submit" value="Register me" class="btnRegister" id="btnRegister"  password="btnRegister" name="btnRegister" surname="btnRegister" city="btnRegister" email="btnRegister" country="btnRegister" phone_number="btnRegister"/>'
                     + '</td></tr><tr><td><a href="/">Already have an account? Log in here!</a></td></tr></table> ';
                 $('#register').html(registerTable);
             }
