@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+         ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+         }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #111;
+        }
+        .active {
+            background-color: #04AA6D;
+        }
+        li {
+            border-right: 1px solid #bbb;
+        }
+
+        li:last-child {
+            border-right: none;
+        }
+        .hello{
+            align=center;
+        }
+     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadLogin();
+
+
+        });
+        function loadLogin() {
+                console.log('register table loading...');
+                let loginTable = '<h2>Log in</h2>'
+                    + '<table class="styled-table"><tr>'
+                    + '<tr><th>Email:</th>'
+                    + '<td><input type="email" id="email" name="email"/></td></tr>'
+                    + '<tr><th>Password:</th>'
+                    + '<td><input type="password" id="password" name="password"/></td></tr>'
+                    + '<tr><td><input type="submit" value="Log me" class="btnLogin" id="btnLogin"  password="btnLogin"  email="btnLogin" />'
+                    + '</table>';
+                $('#login').html(loginTable);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+     <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Log in</a></li>
+        <li><a href="/register">Register</a></li>
+    </ul>
+    <div id="login"></div>
+</html>

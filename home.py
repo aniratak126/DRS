@@ -6,16 +6,11 @@ from flask_sqlalchemy import SQLAlchemy
 # pip install flask_sqlalchemy
 #################################################################
 main = Flask(__name__)
-
+login = Flask(__name__)
 main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 # main.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 # Initializing the database
 db = SQLAlchemy(main)
-
-# ovo odkomentarisati samo prvi put kada pokrecete (valjda)
-# i onda bi trebalo da vam se pojavi folder instance u kome je users.db
-# with main.app_context():
-#     db.create_all()
 
 
 # Creating db model
@@ -38,6 +33,11 @@ def __repr__(self):
 @main.route('/')
 def index():
     return render_template('home.html')
+
+
+@main.route('/login')
+def logIn():
+    return render_template('login.html')
 
 
 @main.route('/get-name', methods=['POST'])
@@ -66,7 +66,7 @@ def get_user():
                  country=country_get, phone_number=pnumber_get, email=email_get, password=password_get)
     db.session.add(user)
     db.session.commit()
-    return f'Hello, ' + name_get + ' ' + surname_get + ' ' + address_get + ' ' + city_get + ' ' + country_get + ' ' +\
+    return f'Hello, ' + name_get + ' ' + surname_get + ' ' + address_get + ' ' + city_get + ' ' + country_get + ' ' + \
            pnumber_get + ' ' + email_get + ' ' + password_get
 
 
