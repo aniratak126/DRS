@@ -41,7 +41,18 @@
         $(document).ready(function () {
             loadLogin();
 
+            $(document).on('click','.btnLogin', function() {
+                let email = $('#email').val();
+                let password = $('#password').val();
 
+                $.post('/login_user',
+                    {
+                        email: email,
+                        password: password
+                    }, function(data) {
+                    $('#loginresult').text(data);
+                });
+            });
         });
         function loadLogin() {
                 console.log('register table loading...');
@@ -66,4 +77,5 @@
         <li><a href="/register">Register</a></li>
     </ul>
     <div id="login"></div>
+    <div id="loginresult"></div>
 </html>

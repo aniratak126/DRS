@@ -40,6 +40,12 @@ def logIn():
     return render_template('login.html')
 
 
+@main.route('/login_user', methods=['GET', 'POST'])
+def login_user():
+    # TO DO
+    return ''
+
+
 @main.route('/get-name', methods=['POST'])
 def get_name():
     name = request.form.get('name')
