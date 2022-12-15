@@ -43,7 +43,7 @@ def logIn():
 @main.route('/login_user', methods=['GET', 'POST'])
 def login_user():
     # TO DO
-    return ''
+    return 'successfully'
 
 
 @main.route('/get-name', methods=['POST'])
