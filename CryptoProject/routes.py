@@ -1,12 +1,15 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from CryptoProject import app, db
 from CryptoProject.models import Users
 
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return redirect(url_for('home'))
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 @app.route('/login')
 def login():
@@ -15,8 +18,20 @@ def login():
 
 @app.route('/login_user', methods=['GET', 'POST'])
 def login_user():
-    # TO DO
-    return 'successfully'
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = Users.query.filter_by(email=email).first()
+        if user:
+            if user.password == password:
+                return redirect(url_for('home'))
+            else:
+                return f'Wrong password'
+        else:
+            return f'User with email: '+email+' does not exist.'
+
+    return render_template('home.html', boolean=True)
 
 
 @app.route('/get-name', methods=['POST'])
@@ -32,18 +47,28 @@ def reg():
 
 @app.route('/get_user', methods=['GET', 'POST'])
 def get_user():
-    name_get = request.form.get('name')
-    surname_get = request.form.get('surname')
-    address_get = request.form.get('address')
-    city_get = request.form.get('city')
-    country_get = request.form.get('country')
-    phone_number_get = request.form.get('phone_number')
-    email_get = request.form.get('email')
-    password_get = request.form.get('password')
+    if request.method == 'POST':
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+        address = request.form.get('address')
+        city = request.form.get('city')
+        country = request.form.get('country')
+        phone_number = request.form.get('phone_number')
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-    user = Users(name=name_get, surname=surname_get, address=address_get, city=city_get,
-                 country=country_get, phone_number=phone_number_get, email=email_get, password=password_get)
-    db.session.add(user)
-    db.session.commit()
-    return f'Hello, ' + name_get + ' ' + surname_get + ' ' + address_get + ' ' + city_get + ' ' + country_get + ' ' + \
-           phone_number_get + ' ' + email_get + ' ' + password_get
+        user = Users.query.filter_by(email=email).first()
+
+        if user:
+            return f'User with that email already exist.'
+        elif len(email) < 4:
+            return f'Email must be greater than 3 characters.'
+        elif len(password) < 7:
+            return f'Password must be greater than 7 characters.'
+        else:
+            new_user = Users(name=name, surname=surname, address=address, city=city, country=country,
+                             phone_number=phone_number, email=email, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('home'))
+    return render_template('register.html')
