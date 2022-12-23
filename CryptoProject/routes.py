@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, session
 from CryptoProject import app, db
 from CryptoProject.models import Users
 
@@ -32,6 +32,7 @@ def login_user():
         user = Users.query.filter_by(email=email).first()
         if user:
             if user.password == password:
+                session['user'] = request.form.get('email')
                 return redirect(url_for('logged'))
             else:
                 return f'Wrong password'
@@ -39,6 +40,12 @@ def login_user():
             return f'User with email: '+email+' does not exist.'
 
     return 'success'
+
+
+@app.route('/log_out')
+def log_out():
+    session.pop('user', default=None)
+    return redirect(url_for('login'))
 
 
 @app.route('/get-name', methods=['POST'])
