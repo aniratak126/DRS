@@ -7,9 +7,16 @@ from CryptoProject.models import Users
 def index():
     return redirect(url_for('home'))
 
+
+@app.route('/logged')
+def logged():
+    return render_template('loggeduser.html')
+
+
 @app.route('/home')
 def home():
     return render_template('home.html')
+
 
 @app.route('/login')
 def login():
@@ -25,13 +32,13 @@ def login_user():
         user = Users.query.filter_by(email=email).first()
         if user:
             if user.password == password:
-                return redirect(url_for('home'))
+                return redirect(url_for('logged'))
             else:
                 return f'Wrong password'
         else:
             return f'User with email: '+email+' does not exist.'
 
-    return render_template('home.html', boolean=True)
+    return 'success'
 
 
 @app.route('/get-name', methods=['POST'])
@@ -70,5 +77,5 @@ def get_user():
                              phone_number=phone_number, email=email, password=password)
             db.session.add(new_user)
             db.session.commit()
-            return redirect(url_for('home'))
-    return render_template('register.html')
+            return 'success'
+    return 'success'
