@@ -1,11 +1,9 @@
-from CryptoProject import app ,db
+from CryptoProject import create_app
+# from CryptoProject import db
+app = create_app()
 
 if __name__ == '__main__':
-    app.run()
-    #with app.app_context():
-    #     db.create_all()
+    app.run(debug=True)
 
-# U PRVOJ LINIJI ODKOMENTARISATI # ,db
-# U PETOJ I SESTOJ LINIJI ODKOMENTARISATI SVE
-# ZAKOMENTARISATI CETVRTU LINIJU
-# POKRENI JEDNOM, NAPRAVI SE TABELA, VRATI KAKO JE BILO
+    # with app.app_context():
+    #    db.create_all()

@@ -1,18 +1,46 @@
-from CryptoProject import db
+from datetime import datetime, timezone, timedelta
+# from itsdangerous import URLSafeTimedSerializer as Serializer
+from flask import current_app
+from CryptoProject import db, login_manager
+from flask_login import UserMixin
+import jwt
 
 
-# Creating db model
-class Users(db.Model):
-    name = db.Column(db.String(15), nullable=False)
-    surname = db.Column(db.String(15), nullable=False)
-    address = db.Column(db.String(30), nullable=False)
-    city = db.Column(db.String(15), nullable=False)
-    country = db.Column(db.String(20), nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False, unique=True)
-    email = db.Column(db.String(30), primary_key=True, nullable=False)
-    password = db.Column(db.String(30), nullable=False)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
-# Create a function to return a string when we add someone
-def __repr__(self):
-    return '<Name %r>' % self.email
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy=True)
+
+
+    def get_reset_token(self, expired_sec=1800):
+        s = jwt.encode({"exp": datetime.now(tz=timezone.utc) + timedelta(
+            seconds=expired_sec), "user_id": self.id}, current_app.config['SECRET_KEY'], algorithm="HS256")
+        return s
+
+    @staticmethod
+    def verify_reset_token(token):
+        try:
+            s = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
+            user_id = s['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"
