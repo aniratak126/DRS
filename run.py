@@ -24,6 +24,6 @@ if __name__ == '__main__':
 # EMAIL_PASS / vasa email lozinka
 
 # restart pc
-# zakomentarisati 5. liniju, odkomentarisati 2,8,9 i pokrenuti
+# zakomentarisati 6. liniju, odkomentarisati 2,8,9 i pokrenuti
 # vratiti kako je bilo
 # pokrenuti i kraj
