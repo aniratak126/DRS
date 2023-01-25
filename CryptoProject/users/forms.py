@@ -95,6 +95,15 @@ class UpdateAccountForm(FlaskForm):
                     raise ValidationError('That cellphone is taken. Please choose a different one.')
 
 
+class VerificationForm(FlaskForm):
+    number = StringField('Number', validators=[DataRequired(), Length(min=6, max=20)])
+    name = StringField('name', validators=[DataRequired()])
+    expires = PasswordField('Expires', validators=[DataRequired()])
+    ccv = PasswordField('CCV', validators=[DataRequired()])
+
+    submit = SubmitField('Activate')
+
+
 '''
     def validate_cellphone(self, cellphone):
         try:
