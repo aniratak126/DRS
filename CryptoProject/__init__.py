@@ -24,11 +24,9 @@ def create_app(config_class=Config):
     mail.init_app(app)
 
     from CryptoProject.users.routes import users
-    from CryptoProject.posts.routes import posts
     from CryptoProject.main.routes import main
     from CryptoProject.errors.handlers import errors
     app.register_blueprint(users)
-    app.register_blueprint(posts)
     app.register_blueprint(main)
     app.register_blueprint(errors)
 
