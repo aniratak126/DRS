@@ -14,6 +14,19 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
+    name = StringField('Name',
+                       validators=[DataRequired(), Length(min=2, max=25)])
+    surname = StringField('Surname',
+                          validators=[DataRequired(), Length(min=2, max=30)])
+    address = StringField('Address',
+                          validators=[DataRequired(), Length(min=6, max=60)])
+    city = StringField('City',
+                       validators=[DataRequired(), Length(min=2, max=25)])
+    state = StringField('State',
+                        validators=[DataRequired(), Length(min=2, max=25)])
+    cellphone = StringField('Cellphone',
+                            validators=[DataRequired(), Length(min=9, max=30)])
+
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -25,6 +38,13 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
+    """
+    #Radi tek kad se napravi nova tabela
+    def validate_cellphone(self, cellphone):
+        user = User.query.filter_by(cellphone=cellphone.data).first()
+        if user:
+            raise ValidationError('That phone is taken. Please choose a different one.')
+    """
 
 
 class LoginForm(FlaskForm):
