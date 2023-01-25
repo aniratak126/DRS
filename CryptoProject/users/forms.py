@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TelField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
 from CryptoProject.models import User
@@ -24,9 +23,8 @@ class RegistrationForm(FlaskForm):
                        validators=[DataRequired(), Length(min=2, max=25)])
     state = StringField('State',
                         validators=[DataRequired(), Length(min=2, max=25)])
-    cellphone = StringField('Cellphone',
-                            validators=[DataRequired(), Length(min=9, max=30)])
-
+    cellphone = TelField('Cellphone',
+                         validators=[DataRequired(), Length(min=9, max=30)])
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -40,9 +38,13 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email is taken. Please choose a different one.')
 
     def validate_cellphone(self, cellphone):
-        user = User.query.filter_by(cellphone=cellphone.data).first()
-        if user:
-            raise ValidationError('That phone is taken. Please choose a different one.')
+        if not cellphone.data.isdigit():
+            raise ValidationError('Cellphone needs to be in digit form!')
+        else:
+            if cellphone.data != current_user.cellphone:
+                user = User.query.filter_by(email=cellphone.data).first()
+                if user:
+                    raise ValidationError('That cellphone is taken. Please choose a different one.')
 
 
 class LoginForm(FlaskForm):
@@ -68,8 +70,8 @@ class UpdateAccountForm(FlaskForm):
                        validators=[DataRequired(), Length(min=2, max=25)])
     state = StringField('State',
                         validators=[DataRequired(), Length(min=2, max=25)])
-    cellphone = StringField('Cellphone',
-                            validators=[DataRequired(), Length(min=9, max=30)])
+    cellphone = TelField('Cellphone',
+                         validators=[DataRequired(), Length(min=9, max=30)])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -85,25 +87,24 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is taken. Please choose a different one.')
 
     def validate_cellphone(self, cellphone):
-        if cellphone.data != current_user.cellphone:
-            user = User.query.filter_by(email=cellphone.data).first()
-            if user:
-                raise ValidationError('That cellphone is taken. Please choose a different one.')
+        if not cellphone.data.isdigit():
+            raise ValidationError('Cellphone needs to be in digit form!')
+        else:
+            if cellphone.data != current_user.cellphone:
+                user = User.query.filter_by(email=cellphone.data).first()
+                if user:
+                    raise ValidationError('That cellphone is taken. Please choose a different one.')
 
 
-class RequestResetForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    submit = SubmitField('Request Password Reset')
+'''
+    def validate_cellphone(self, cellphone):
+        try:
+            x = int(cellphone.data)
+            if cellphone.data != current_user.cellphone:
+                user = User.query.filter_by(email=cellphone.data).first()
+                if user:
+                    raise ValidationError('That cellphone is taken. Please choose a different one.')
+        except:
+            raise ValidationError('Cellphone needs to be in digit form!')
 
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError('There is no account with that email. You must register first.')
-
-
-class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Reset Password')
+'''

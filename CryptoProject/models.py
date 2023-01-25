@@ -1,8 +1,5 @@
-from datetime import datetime, timezone, timedelta
-from flask import current_app
 from CryptoProject import db, login_manager
 from flask_login import UserMixin
-import jwt
 
 
 @login_manager.user_loader
@@ -22,24 +19,11 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(25), nullable=False)
     state = db.Column(db.String(25), nullable=False)
     cellphone = db.Column(db.Integer, unique=True, nullable=False)
-
-    def get_reset_token(self, expired_sec=1800):
-        s = jwt.encode({"exp": datetime.now(tz=timezone.utc) + timedelta(
-            seconds=expired_sec), "user_id": self.id}, current_app.config['SECRET_KEY'], algorithm="HS256")
-        return s
-
-    @staticmethod
-    def verify_reset_token(token):
-        try:
-            s = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
-            user_id = s['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
+    money = db.Column(db.Float, nullable=False, default=0.0)
 
 
 '''
-NEPOTREBNO
+!!! NE BRISI OVO !!!
 class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
