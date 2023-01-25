@@ -5,7 +5,6 @@ from flask_login import current_user
 from CryptoProject.models import User
 
 
-
 class TransactionForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])

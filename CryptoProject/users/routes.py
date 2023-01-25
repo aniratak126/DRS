@@ -24,10 +24,11 @@ def register():
 
 @users.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated and current_user._get_current_object().validated:
-        return redirect(url_for('main.home'))
-    elif current_user.is_authenticated:
-        return redirect(url_for('verification'))
+    if current_user.is_authenticated:
+        if current_user._get_current_object().validated:
+            return redirect(url_for('users.logged'))
+        else:
+            return redirect(url_for('users.verification'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -41,6 +42,7 @@ def login():
 
 
 @users.route("/logout")
+@login_required  # dodao, nzm da l treba
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
@@ -51,31 +53,33 @@ def logout():
 def account():
     if current_user._get_current_object().validated:
         verified = True
+        form = UpdateAccountForm()
+        if form.validate_on_submit():
+            current_user.username = form.username.data
+            current_user.email = form.email.data
+            current_user.name = form.name.data
+            current_user.surname = form.surname.data
+            current_user.address = form.address.data
+            current_user.city = form.city.data
+            current_user.state = form.state.data
+            current_user.cellphone = form.cellphone.data
+            db.session.commit()
+            flash('Your account has been updated!', 'success')
+            return redirect(url_for('users.account'))
+        elif request.method == 'GET':
+            form.username.data = current_user.username
+            form.email.data = current_user.email
+            form.name.data = current_user.name
+            form.surname.data = current_user.surname
+            form.address.data = current_user.address
+            form.city.data = current_user.city
+            form.state.data = current_user.state
+            form.cellphone.data = current_user.cellphone
+        return render_template('account.html', title='Account', form=form, verified=verified)
     else:
         verified = False
-    form = UpdateAccountForm()
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        current_user.name = form.name.data
-        current_user.surname = form.surname.data
-        current_user.address = form.address.data
-        current_user.city = form.city.data
-        current_user.state = form.state.data
-        current_user.cellphone = form.cellphone.data
-        db.session.commit()
-        flash('Your account has been updated!', 'success')
-        return redirect(url_for('users.account'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
-        form.name.data = current_user.name
-        form.surname.data = current_user.surname
-        form.address.data = current_user.address
-        form.city.data = current_user.city
-        form.state.data = current_user.state
-        form.cellphone.data = current_user.cellphone
-    return render_template('account.html', title='Account', form=form, verified=verified)
+        flash("Your account is not activated!", "danger")
+        return redirect(url_for('users.verification'))
 
 
 @users.route("/verification", methods=['GET', 'POST'])
@@ -84,8 +88,15 @@ def verification():
     if current_user._get_current_object().validated:
         return redirect(url_for('main.home'))
     else:
-        verified=False
-
-    form = VerificationForm()
-    #Ovde sad da se proveri za karticu i da se vrati stranica koja treba
-    return render_template('verification.html', title='Verification', form=form, verified=verified)
+        form = VerificationForm()
+        verified = False
+        if form.validate_on_submit():
+            if form.number.data == "4242424242424242" and form.name.data == current_user.name and form.expires.data == "02/23" and form.ccv.data == "123":
+                current_user.validated = True
+                db.session.commit()
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else render_template('logged.html')
+            else:
+                flash('Wrong credentials! Try again!', 'danger')
+        else:
+            return render_template('verification.html', title='Verification', form=form, verified=verified)

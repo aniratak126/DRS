@@ -7,10 +7,12 @@ main = Blueprint('main', __name__)
 @main.route("/")
 @main.route("/home")
 def home():
-    if current_user:
-        if current_user._get_current_object().validated:
-            return render_template('home.html')
-        else:
-            return redirect(url_for('users.verification'))
+    '''
+    validated = False
+    if current_user._get_current_object().validated:
+        validated = True
     else:
-        return render_template('home.html')
+        validated = False
+    return render_template('home.html', validated=validated)
+'''
+    return render_template('home.html')

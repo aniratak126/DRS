@@ -97,22 +97,23 @@ class UpdateAccountForm(FlaskForm):
 
 class VerificationForm(FlaskForm):
     number = StringField('Number', validators=[DataRequired(), Length(min=6, max=20)])
-    name = StringField('name', validators=[DataRequired()])
-    expires = PasswordField('Expires', validators=[DataRequired()])
-    ccv = PasswordField('CCV', validators=[DataRequired()])
-
+    name = StringField('Name', validators=[DataRequired()])
+    expires = StringField('Expires', validators=[DataRequired()])
+    ccv = TelField('CCV', validators=[DataRequired(), Length(min=3, max=3)])
     submit = SubmitField('Activate')
 
+    def validate_number(self, number):
+        if number.data != "4242424242424242":
+            raise ValidationError('Card number is invalid')
 
-'''
-    def validate_cellphone(self, cellphone):
-        try:
-            x = int(cellphone.data)
-            if cellphone.data != current_user.cellphone:
-                user = User.query.filter_by(email=cellphone.data).first()
-                if user:
-                    raise ValidationError('That cellphone is taken. Please choose a different one.')
-        except:
-            raise ValidationError('Cellphone needs to be in digit form!')
+    def validate_name(self, name):
+        if name.data != current_user.name:
+            raise ValidationError('Name is invalid')
 
-'''
+    def validate_expires(self, expires):
+        if expires.data != "02/23":
+            raise ValidationError('Expire Date is invalid')
+
+    def validate_ccv(self, ccv):
+        if ccv.data != "123":
+            raise ValidationError('CCV is invalid')
