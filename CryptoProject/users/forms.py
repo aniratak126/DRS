@@ -90,7 +90,7 @@ class UpdateAccountForm(FlaskForm):
             raise ValidationError('Cellphone needs to be in digit form!')
         else:
             if cellphone.data != current_user.cellphone:
-                user = User.query.filter_by(email=cellphone.data).first()
+                user = User.query.filter_by(cellphone=cellphone.data).first()
                 if user:
                     raise ValidationError('That cellphone is taken. Please choose a different one.')
 

@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(25), nullable=False)
     state = db.Column(db.String(25), nullable=False)
     cellphone = db.Column(db.Integer, unique=True, nullable=False)
+    validated = db.Column(db.Boolean, nullable=False, default=False)
     money = db.Column(db.Float, nullable=False, default=0.0)
 
 
