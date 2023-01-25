@@ -38,13 +38,11 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
-    """
-    #Radi tek kad se napravi nova tabela
+
     def validate_cellphone(self, cellphone):
         user = User.query.filter_by(cellphone=cellphone.data).first()
         if user:
             raise ValidationError('That phone is taken. Please choose a different one.')
-    """
 
 
 class LoginForm(FlaskForm):
@@ -60,7 +58,18 @@ class UpdateAccountForm(FlaskForm):
                            validators=[DataRequired(), Length(min=6, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    name = StringField('Name',
+                       validators=[DataRequired(), Length(min=2, max=25)])
+    surname = StringField('Surname',
+                          validators=[DataRequired(), Length(min=2, max=30)])
+    address = StringField('Address',
+                          validators=[DataRequired(), Length(min=6, max=60)])
+    city = StringField('City',
+                       validators=[DataRequired(), Length(min=2, max=25)])
+    state = StringField('State',
+                        validators=[DataRequired(), Length(min=2, max=25)])
+    cellphone = StringField('Cellphone',
+                            validators=[DataRequired(), Length(min=9, max=30)])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -74,6 +83,12 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
+
+    def validate_cellphone(self, cellphone):
+        if cellphone.data != current_user.cellphone:
+            user = User.query.filter_by(email=cellphone.data).first()
+            if user:
+                raise ValidationError('That cellphone is taken. Please choose a different one.')
 
 
 class RequestResetForm(FlaskForm):
