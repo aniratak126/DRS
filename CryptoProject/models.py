@@ -1,6 +1,6 @@
 from CryptoProject import db, login_manager
 from flask_login import UserMixin
-
+from enum import Enum
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,6 +28,13 @@ class Transaction(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     amount = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(20),nullable=False)
+
+
+class Status(Enum):
+    IN_PROGRESS = 1
+    COMPLETED = 2
+    DENIED = 3
 
 
 '''
