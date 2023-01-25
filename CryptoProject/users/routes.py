@@ -9,10 +9,6 @@ users = Blueprint('users', __name__)
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
-    if current_user:
-        loged = True
-    else:
-        loged = False
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     form = RegistrationForm()
@@ -23,46 +19,41 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
-    return render_template('register.html', title='Register', form=form, loged=loged)
+    return render_template('register.html', title='Register', form=form)
 
 
 @users.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user:
-        loged = True
-    else:
-        loged = False
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and current_user._get_current_object().validated:
         return redirect(url_for('main.home'))
+    elif current_user.is_authenticated:
+        return redirect(url_for('verification'))
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.home'))
+            return redirect(next_page) if next_page else redirect(url_for('users.verification'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form, loged=loged)
+    return render_template('login.html', title='Login', form=form)
 
 
 @users.route("/logout")
 def logout():
-    if current_user:
-        loged = True
-    else:
-        loged = False
     logout_user()
-    return redirect(url_for('main.home', loged=loged))
+    return redirect(url_for('main.home'))
 
 
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    if current_user:
-        loged = True
+    if current_user._get_current_object().validated:
+        verified = True
     else:
-        loged = False
+        verified = False
     form = UpdateAccountForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -85,17 +76,17 @@ def account():
         form.city.data = current_user.city
         form.state.data = current_user.state
         form.cellphone.data = current_user.cellphone
-    return render_template('account.html', title='Account', form=form, loged=loged)
+    return render_template('account.html', title='Account', form=form, verified=verified)
 
 
 @users.route("/verification", methods=['GET', 'POST'])
 @login_required
 def verification():
-    form = VerificationForm()
-    if current_user:
-        loged = True
+    if current_user._get_current_object().validated:
+        return redirect(url_for('main.home'))
     else:
-        loged = False
+        verified=False
 
+    form = VerificationForm()
     #Ovde sad da se proveri za karticu i da se vrati stranica koja treba
-    return render_template('verification.html', title='Verification', form=form, loged=loged)
+    return render_template('verification.html', title='Verification', form=form, verified=verified)
