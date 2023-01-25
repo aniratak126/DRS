@@ -41,10 +41,9 @@ class RegistrationForm(FlaskForm):
         if not cellphone.data.isdigit():
             raise ValidationError('Cellphone needs to be in digit form!')
         else:
-            if cellphone.data != current_user.cellphone:
-                user = User.query.filter_by(email=cellphone.data).first()
-                if user:
-                    raise ValidationError('That cellphone is taken. Please choose a different one.')
+            user = User.query.filter_by(email=cellphone.data).first()
+            if user:
+                  raise ValidationError('That cellphone is taken. Please choose a different one.')
 
 
 class LoginForm(FlaskForm):
@@ -96,6 +95,17 @@ class UpdateAccountForm(FlaskForm):
                     raise ValidationError('That cellphone is taken. Please choose a different one.')
 
 
+class VerificationForm(FlaskForm):
+    number = StringField('Number',
+                           validators=[DataRequired(), Length(min=16, max=16)])
+    name = StringField('Name',
+                         validators=[DataRequired(), Length(min=2, max=20)])
+    expires = StringField('Expires',
+                       validators=[DataRequired(), Length(min=6, max=20)])
+
+    ccv = StringField('CCV',
+                       validators=[DataRequired(), Length(min=3, max=3)])
+    submit = SubmitField('Activate')
 '''
     def validate_cellphone(self, cellphone):
         try:
