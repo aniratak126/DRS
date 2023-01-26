@@ -11,6 +11,7 @@ from CryptoProject.transactions.forms import TransactionForm, DepositForm
 
 transactions = Blueprint('transactions', __name__)
 
+
 @transactions.route("/new_transaction", methods=['GET', 'POST'])
 @login_required
 def new_transaction():
@@ -32,7 +33,9 @@ def new_transaction():
             db.session.commit()
             sender = current_user.email
             try:
-                threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id, sender)).start()
+                trans_thread = threading.Thread(target=transaction_thread,
+                                                args=(form.email.data, form.amount.data, transaction_id, sender))
+                trans_thread.start()
             finally:
                 return redirect(url_for('users.logged'))
         else:
@@ -67,7 +70,7 @@ def deposit():
 
 def transaction_thread(email, amount, transaction_id, sender):
     from run import app
-    time.sleep(20)
+    time.sleep(5)
     try:
         with app.app_context():
             user = User.query.filter_by(email=email).first()
@@ -80,10 +83,8 @@ def transaction_thread(email, amount, transaction_id, sender):
                 i_did_it.money = i_did_it.money - amount
                 transaction_done.status = Status.COMPLETED.name
             db.session.commit()
-            flash("Your transaction successfully finished!", "information")
     except:
         with app.app_context():
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
             transaction_done.status = Status.DENIED.name
             db.session.commit()
-            flash("Your transaction unsuccessfully finished!", "warning")

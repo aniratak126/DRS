@@ -14,7 +14,9 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password, name=form.name.data, surname=form.surname.data, address=form.address.data, city=form.city.data, state=form.state.data, cellphone=form.cellphone.data)
+        user = User(username=form.username.data, email=form.email.data,
+                    password=hashed_password, name=form.name.data, surname=form.surname.data, address=form.address.data,
+                    city=form.city.data, state=form.state.data, cellphone=form.cellphone.data)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -77,7 +79,7 @@ def account():
             form.cellphone.data = current_user.cellphone
         return render_template('account.html', title='Account', form=form, verified=verified)
     else:
-        verified = False
+        # verified = False
         flash("Your account is not activated!", "danger")
         return redirect(url_for('users.verification'))
 
@@ -91,7 +93,8 @@ def verification():
         form = VerificationForm()
         verified = False
         if form.validate_on_submit():
-            if form.number.data == "4242424242424242" or form.number.data == "4242 4242 4242 4242" and form.name.data == current_user.name and form.expires.data == "02/23" and form.ccv.data == "123":
+            if form.number.data == "4242424242424242" or form.number.data == "4242 4242 4242 4242" and \
+                    form.name.data == current_user.name and form.expires.data == "02/23" and form.ccv.data == "123":
                 current_user.validated = True
                 db.session.commit()
                 next_page = request.args.get('next')
@@ -109,7 +112,6 @@ def logged():
         return redirect(url_for('users.verification'))
     else:
         verified = True
-        # logika koda nekog
         return render_template('logged.html', verified=verified)
 
 

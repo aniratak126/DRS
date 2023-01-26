@@ -11,7 +11,7 @@ main = Blueprint('main', __name__)
 def home():
     # defining key/request url
     key = "https://api.binance.com/api/v3/ticker/price?symbol="
-    currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT","XRPUSDT", "ETHUSDT"]
+    currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT", "XRPUSDT", "ETHUSDT"]
     j = 0
     cryptos = dict()
     # requesting data from url
@@ -34,7 +34,6 @@ def home():
             currency = "Ethereum"
         cryptos[currency] = data["price"]
 
-
     # ovde pravi gresku
     if not current_user.is_anonymous:
         if current_user._get_current_object().validated:
@@ -42,20 +41,3 @@ def home():
         else:
             return redirect(url_for('users.verification'))
     return render_template('home.html', title='Home', cryptos=cryptos)
-
-
-
-''' 
-ako bude pravilo problema ovo gore 
-UPDATE: pravi problem - vraca na login umesto home
-
-def home():
-    if current_user.is_anonymous:
-        return redirect(url_for('users.login'))
-    else:
-        if current_user._get_current_object().validated:
-            return redirect(url_for('users.logged'))
-        else:
-            return redirect(url_for('users.verification'))
-    return render_template('home.html', validated=validated)
-'''
