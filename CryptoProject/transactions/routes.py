@@ -31,9 +31,10 @@ def new_transaction():
             db.session.add(transaction)
             db.session.commit()
             sender = current_user.email
-
-            threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id, sender)).start()
-
+            try:
+                threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id, sender)).start()
+            finally:
+                return redirect(url_for('users.logged'))
         else:
             k = keccak.new(digest_bits=256)
             k.update(
@@ -79,8 +80,10 @@ def transaction_thread(email, amount, transaction_id, sender):
                 i_did_it.money = i_did_it.money - amount
                 transaction_done.status = Status.COMPLETED.name
             db.session.commit()
+            flash("Your transaction successfully finished!", "information")
     except:
         with app.app_context():
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
             transaction_done.status = Status.DENIED.name
             db.session.commit()
+            flash("Your transaction unsuccessfully finished!", "warning")

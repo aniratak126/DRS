@@ -91,7 +91,7 @@ def verification():
         form = VerificationForm()
         verified = False
         if form.validate_on_submit():
-            if form.number.data == "4242424242424242" and form.name.data == current_user.name and form.expires.data == "02/23" and form.ccv.data == "123":
+            if form.number.data == "4242424242424242" or form.number.data == "4242 4242 4242 4242" and form.name.data == current_user.name and form.expires.data == "02/23" and form.ccv.data == "123":
                 current_user.validated = True
                 db.session.commit()
                 next_page = request.args.get('next')

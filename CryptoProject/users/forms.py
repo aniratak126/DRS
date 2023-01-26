@@ -103,7 +103,7 @@ class VerificationForm(FlaskForm):
     submit = SubmitField('Activate')
 
     def validate_number(self, number):
-        if number.data != "4242424242424242":
+        if number.data != "4242424242424242" or number.data != "4242 4242 4242 4242":
             raise ValidationError('Card number is invalid')
 
     def validate_name(self, name):
