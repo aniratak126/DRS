@@ -1,10 +1,11 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from CryptoProject.transactions.forms import TransactionForm
-from CryptoProject.models import Transaction, Status
+from CryptoProject.models import Transaction, Status, User
 from CryptoProject import db
 from flask_login import current_user
 from random import randint
 from Crypto.Hash import keccak
+import time
 
 transactions = Blueprint('transactions', __name__)
 
@@ -13,11 +14,28 @@ transactions = Blueprint('transactions', __name__)
 def new_transaction():
     form = TransactionForm()
     if form.validate_on_submit():
-        k = keccak.new(digest_bits=256)
-        k.update(bytes(current_user.email) + bytes(form.email.data) + bytes(form.amount.data) + bytes(randint(1,99999)))
-        transaction = Transaction(id=k.hexdigest(), sender_id=current_user.email, receiver_id=form.email.data,
-                                  amount=form.amount.data, status=Status.IN_PROGRESS.name)
-        db.session.add(transaction)
-        db.session.commit()
+        if current_user.money >= form.amount.data:
+            k = keccak.new(digest_bits=256)
+            k.update(bytes(current_user.email) + bytes(form.email.data) + bytes(form.amount.data) + bytes(randint(1,99999)))
+            transaction = Transaction(id=k.hexdigest(), sender_id=current_user.email, receiver_id=form.email.data,
+                                        amount=form.amount.data, status=Status.IN_PROGRESS.name)
+            db.session.add(transaction)
+            db.session.commit()
+            time.sleep(100)
+            user = User.query.filter_by(email=form.email.data).first()
+            user.money = user.money + form.amount.data
+            user.state = Status.COMPLETED.name
+            db.session.commit()
+
+        else:
+            k = keccak.new(digest_bits=256)
+            k.update(bytes(current_user.email) + bytes(form.email.data) + bytes(form.amount.data) + bytes(randint(1, 99999)))
+            transaction = Transaction(id=k.hexdigest(), sender_id=current_user.email, receiver_id=form.email.data,
+                                      amount=form.amount.data, status=Status.DENIED.name)
+            db.session.add(transaction)
+            db.session.commit()
+            raise ValueError('Insufficient funds!')
     return redirect(url_for('main.home'))
+
+
 
