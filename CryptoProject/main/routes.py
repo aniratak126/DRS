@@ -28,6 +28,6 @@ def home():
         if current_user._get_current_object().validated:
             return redirect(url_for('users.logged'))
         else:
-            validated = False
+            return redirect(url_for('users.verification'))
     return render_template('home.html', validated=validated)
 '''

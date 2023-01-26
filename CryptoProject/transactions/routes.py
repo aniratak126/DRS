@@ -37,6 +37,7 @@ def new_transaction():
 
             user = User.query.filter_by(email=form.email.data).first()
             user.money = user.money + form.amount.data
+            current_user.money = current_user.money - form.amount.data
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
             transaction_done.status = Status.COMPLETED.name
             db.session.commit()
