@@ -62,16 +62,19 @@
                     <h3>Sidebar</h3>
                     <p class='text-muted'>
                         <ul class="list-group">
-                            <li class="list-group-item list-group-item-light">Latest Posts</li>
-                            <li class="list-group-item list-group-item-light">Announcements</li>
-                            <li class="list-group-item list-group-item-light">Calendars</li>
-                            <li class="list-group-item list-group-item-light">etc</li>
+                            <li class="list-group-item list-group-item-light">
+                                <a href="{{ url_for('transactions.new_transaction')}}">New Transaction</a></li>
+                            <li class="list-group-item list-group-item-light">Transactions History</li>
+                            <li class="list-group-item list-group-item-light">Account Balance</li>
+                            <li class="list-group-item list-group-item-light">Deposit To Online Account</li>
+                            <li class="list-group-item list-group-item-light">Crypto Change</li>
                         </ul>
                     </p>
                 </div>
             </div>
           {% else %}
-            <div></div>
+            <div>
+            </div>
           {% endif %}
 
 

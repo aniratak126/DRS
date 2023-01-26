@@ -8,9 +8,14 @@ main = Blueprint('main', __name__)
 @main.route("/home")
 def home():
     # ovde pravi gresku
-    if current_user:
+    validated=False
+
+    if current_user.is_anonymous:
+        return redirect(url_for('users.login'))
+    else:
         if current_user._get_current_object().validated:
             return redirect(url_for('users.logged'))
         else:
             validated = False
+
     return render_template('home.html', validated=validated)

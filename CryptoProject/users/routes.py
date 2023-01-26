@@ -95,7 +95,7 @@ def verification():
                 current_user.validated = True
                 db.session.commit()
                 next_page = request.args.get('next')
-                return render_template('logged.html')
+                return redirect(next_page) if next_page else render_template('logged.html')
             else:
                 flash('Wrong credentials! Try again!', 'danger')
         else:
