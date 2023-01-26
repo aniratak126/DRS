@@ -15,6 +15,7 @@ transactions = Blueprint('transactions', __name__)
 @login_required
 def new_transaction():
     if not current_user._get_current_object().validated:
+        flash('Your account is not activated for you to be able to make a transaction!', 'danger')
         return redirect(url_for('users.verification'))
     form = TransactionForm()
     current_user.money = 1000

@@ -18,3 +18,7 @@ class TransactionForm(FlaskForm):
             raise ValidationError('That user doesn\'t exist. Please check the spelling or choose a different one.')
         elif user.email == current_user._get_current_object().email:
             raise ValidationError('You can\'t deposit to your own account!')
+
+    def validate_amount(self, amount):
+        if amount.data < 0.0:
+            raise ValidationError('Amount to deposit canno\'t be lower than 0!')
