@@ -10,7 +10,8 @@ import time
 transactions = Blueprint('transactions', __name__)
 
 
-@transactions.route("/new_transaction")
+
+@transactions.route("/new_transaction", methods=['GET', 'POST'])
 def new_transaction():
     form = TransactionForm()
     if form.validate_on_submit():
@@ -21,11 +22,13 @@ def new_transaction():
                                         amount=form.amount.data, status=Status.IN_PROGRESS.name)
             db.session.add(transaction)
             db.session.commit()
+            flash('Your transaction is being processed! You will be notified when it has been completed', 'success')
             time.sleep(100)
             user = User.query.filter_by(email=form.email.data).first()
             user.money = user.money + form.amount.data
             user.state = Status.COMPLETED.name
             db.session.commit()
+            flash('Your transaction has been completed!', 'success')
 
         else:
             k = keccak.new(digest_bits=256)
@@ -34,8 +37,8 @@ def new_transaction():
                                       amount=form.amount.data, status=Status.DENIED.name)
             db.session.add(transaction)
             db.session.commit()
-            raise ValueError('Insufficient funds!')
-    return redirect(url_for('main.home'))
+            flash('Insufficient funds!', 'danger')
+    return redirect(url_for('transactions.transaction'))
 
 
 
