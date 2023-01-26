@@ -50,4 +50,4 @@ def new_transaction():
             db.session.add(transaction)
             db.session.commit()
             flash('Insufficient funds!', 'danger')
-    return render_template('transaction.html', form=form, verified=verified)
+    return render_template('transaction.html', form=form, verified=True)
