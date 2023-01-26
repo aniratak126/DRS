@@ -21,9 +21,11 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
 
     from CryptoProject.users.routes import users
+    from CryptoProject.transactions.routes import transactions
     from CryptoProject.main.routes import main
     from CryptoProject.errors.handlers import errors
     app.register_blueprint(users)
+    app.register_blueprint(transactions)
     app.register_blueprint(main)
     app.register_blueprint(errors)
 

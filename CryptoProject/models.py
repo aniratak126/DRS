@@ -22,6 +22,13 @@ class User(db.Model, UserMixin):
     money = db.Column(db.Float, nullable=False, default=0.0)
 
 
+class Transaction(db.Model):
+    id = db.Column(db.String(120), primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+
+
 '''
 !!! NE BRISI OVO !!!
 class Post(db.Model):
