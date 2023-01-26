@@ -11,9 +11,9 @@ main = Blueprint('main', __name__)
 def home():
     # defining key/request url
     key = "https://api.binance.com/api/v3/ticker/price?symbol="
-    currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT"]
+    currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT","XRPUSDT", "ETHUSDT"]
     j = 0
-    bitcoin = ""
+    cryptos = dict()
     # requesting data from url
     for i in currencies:
         # completing API for request
@@ -21,7 +21,18 @@ def home():
         data = requests.get(url)
         data = data.json()
         j = j + 1
-        bitcoin = bitcoin + f"\n{data['symbol']} price is {data['price']}"
+        coin = f"\n{data['symbol']} price is {data['price']}"
+        if data['symbol'] == "BTCUSDT":
+            currency = "Bitcoin"
+        elif data['symbol'] == "DOGEUSDT":
+            currency = "Dogecoin"
+        elif data['symbol'] == "LTCUSDT":
+            currency = "Litecoin"
+        elif data['symbol'] == "XRPUSDT":
+            currency = "Ripple"
+        elif data['symbol'] == "ETHUSDT":
+            currency = "Ethereum"
+        cryptos[currency] = data["price"]
 
 
     # ovde pravi gresku
@@ -30,7 +41,7 @@ def home():
             return redirect(url_for('users.logged'))
         else:
             return redirect(url_for('users.verification'))
-    return render_template('home.html', title='Home', bitcoin=bitcoin)
+    return render_template('home.html', title='Home', cryptos=cryptos)
 
 
 

@@ -1,5 +1,29 @@
 {% extends "layout.html" %}
+
 {% block content %}
-    <h1>Current market prices:</h1>
-    <p>{{ bitcoin }}</p>
+<div style="position: absolute;width: 500px;height: 500px;z-index: 15;top: 50%;left: 50%;" >
+     <h1 style="text-align: center;">Welcome to Crypto Exchange!</h1>
+    <a style="text-align: center;" href="{{ url_for('users.register') }}"><h1>Join us today!</h1></a>
+ <div class="content-section" >
+      <div class="media">
+        <div class="media-body">
+          <h2 class="account-heading">Current market prices</h2>
+        </div>
+      </div>
+            <fieldset>
+                <legend class="border-bottom mb-4"></legend>
+                <div>
+                    <ul>
+                        {% for keys, values in cryptos.items() %}
+
+                            <li>{{ keys }}: {{ values }}</li>
+                        {% endfor %}
+                    </ul>
+
+
+                </div>
+            </fieldset>
+    </div>
+</div>
+
 {% endblock content %}
