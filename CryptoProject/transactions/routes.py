@@ -33,9 +33,8 @@ def new_transaction():
             db.session.commit()
             sender = current_user.email
             try:
-                trans_thread = threading.Thread(target=transaction_thread,
-                                                args=(form.email.data, form.amount.data, transaction_id, sender))
-                trans_thread.start()
+                threading.Thread(target=transaction_thread, args=(form.email.data,
+                                                                  form.amount.data, transaction_id, sender)).start()
             finally:
                 return redirect(url_for('users.logged'))
         else:
