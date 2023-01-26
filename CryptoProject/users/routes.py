@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from CryptoProject import db, bcrypt
 from CryptoProject.models import User
-from CryptoProject.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm)
+from CryptoProject.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm, VerificationForm)
 
 users = Blueprint('users', __name__)
 
@@ -70,3 +70,12 @@ def account():
         form.state.data = current_user.state
         form.cellphone.data = current_user.cellphone
     return render_template('account.html', title='Account', form=form)
+
+
+@users.route("/verification", methods=['GET', 'POST'])
+@login_required
+def verification():
+    form = VerificationForm()
+
+    #Ovde sad da se proveri za karticu i da se vrati stranica koja treba
+    return render_template('verification.html', title='Verification', form=form)
