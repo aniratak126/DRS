@@ -1,5 +1,5 @@
 from CryptoProject import create_app
-# from CryptoProject import db
+from CryptoProject import db
 app = create_app()
 
 if __name__ == '__main__':
@@ -9,4 +9,5 @@ if __name__ == '__main__':
         # db.create_all()
 
 # INSTRUCTIONS
-# itsdangerous -> Flask-Bcrypt -> Flask-Login -> Flask-Mail -> Flask-WTF -> Mail -> Pillow -> PyJWT -> WTForms
+# itsdangerous -> Flask-Bcrypt -> Flask-Login -> Flask-Mail ->
+# Flask-WTF -> Mail -> Pillow -> PyJWT -> WTForms -> email-validator

@@ -7,12 +7,10 @@ main = Blueprint('main', __name__)
 @main.route("/")
 @main.route("/home")
 def home():
-    '''
-    validated = False
-    if current_user._get_current_object().validated:
-        validated = True
-    else:
-        validated = False
+    # ovde pravi gresku
+    if current_user:
+        if current_user._get_current_object().validated:
+            return redirect(url_for('users.logged'))
+        else:
+            validated = False
     return render_template('home.html', validated=validated)
-'''
-    return render_template('home.html')

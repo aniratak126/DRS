@@ -15,4 +15,4 @@ class TransactionForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is None:
-            raise ValidationError('That user doesnt exist. Please check the spelling or  choose a different one.')
+            raise ValidationError('That user doesn\'t exist. Please check the spelling or choose a different one.')

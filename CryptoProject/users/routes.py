@@ -95,8 +95,19 @@ def verification():
                 current_user.validated = True
                 db.session.commit()
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else render_template('logged.html')
+                return render_template('logged.html')
             else:
                 flash('Wrong credentials! Try again!', 'danger')
         else:
             return render_template('verification.html', title='Verification', form=form, verified=verified)
+
+
+@users.route("/logged", methods=['GET', 'POST'])
+@login_required
+def logged():
+    if not current_user._get_current_object().validated:
+        return redirect(url_for('users.verification'))
+    else:
+        verified = True
+        # logika koda nekog
+        return render_template('logged.html', verified=verified)
