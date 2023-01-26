@@ -1,11 +1,9 @@
 import struct
 import time
 from random import randint
-
 from Crypto.Hash import keccak
-from flask import render_template, flash, Blueprint
-from flask_login import current_user
-
+from flask import render_template, flash, Blueprint, redirect, url_for
+from flask_login import current_user, login_required
 from CryptoProject import db
 from CryptoProject.models import Transaction, Status, User
 from CryptoProject.transactions.forms import TransactionForm
@@ -14,7 +12,10 @@ transactions = Blueprint('transactions', __name__)
 
 
 @transactions.route("/new_transaction", methods=['GET', 'POST'])
+@login_required
 def new_transaction():
+    if not current_user._get_current_object().validated:
+        return redirect(url_for('users.verification'))
     form = TransactionForm()
     current_user.money = 1000
     if form.validate_on_submit():
@@ -32,13 +33,13 @@ def new_transaction():
             db.session.commit()
 
             time.sleep(6)
+
             user = User.query.filter_by(email=form.email.data).first()
             user.money = user.money + form.amount.data
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
             transaction_done.status = Status.COMPLETED.name
             db.session.commit()
             flash('Your transaction has been completed!', 'success')
-
         else:
             k = keccak.new(digest_bits=256)
             k.update(
@@ -49,4 +50,4 @@ def new_transaction():
             db.session.add(transaction)
             db.session.commit()
             flash('Insufficient funds!', 'danger')
-    return render_template('transaction.html', form=form)
+    return render_template('transaction.html', form=form, verified=verified)

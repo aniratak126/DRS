@@ -16,3 +16,5 @@ class TransactionForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is None:
             raise ValidationError('That user doesn\'t exist. Please check the spelling or choose a different one.')
+        elif user.email == current_user._get_current_object().email:
+            raise ValidationError('You can\'t deposit to your own account!')
