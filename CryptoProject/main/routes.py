@@ -9,6 +9,11 @@ main = Blueprint('main', __name__)
 @main.route("/")
 @main.route("/home")
 def home():
+    if not current_user.is_anonymous:
+        if current_user._get_current_object().validated:
+            return redirect(url_for('users.logged'))
+        else:
+            return redirect(url_for('users.verification'))
     # defining key/request url
     key = "https://api.binance.com/api/v3/ticker/price?symbol="
     currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT", "XRPUSDT", "ETHUSDT"]
@@ -33,11 +38,4 @@ def home():
         elif data['symbol'] == "ETHUSDT":
             currency = "Ethereum"
         cryptos[currency] = data["price"]
-
-    # ovde pravi gresku
-    if not current_user.is_anonymous:
-        if current_user._get_current_object().validated:
-            return redirect(url_for('users.logged'))
-        else:
-            return redirect(url_for('users.verification'))
     return render_template('home.html', title='Home', cryptos=cryptos)
