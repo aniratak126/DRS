@@ -6,9 +6,9 @@ from CryptoProject.models import User
 
 
 class TransactionForm(FlaskForm):
-    email = StringField('Email',
+    email = StringField('Email of the person u wish to transfer the funds to',
                         validators=[DataRequired(), Email()])
-    amount = FloatField('Amount',
+    amount = FloatField('Amount u wish to transfer',
                         validators=[DataRequired()])
     submit = SubmitField('Transfer')
 
