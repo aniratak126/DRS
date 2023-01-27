@@ -1,6 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
+        <legend class="border-bottom">Saved cards</legend>
+        <div>
+            <div class="credit-card mastercard selectable">
+                <div class="credit-card-last4">
+                    4242
+                </div>
+                <div class="credit-card-expiry">
+                    02/23
+                </div>
+            </div>
+        </div>
+
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">

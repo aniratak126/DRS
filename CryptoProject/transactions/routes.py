@@ -55,17 +55,29 @@ def new_transaction():
 @login_required
 def deposit():
     if not current_user._get_current_object().validated:
-        flash('Your account is not activated for you to be able to make a transaction!', 'danger')
+        flash('Your account is not activated', 'danger')
         return redirect(url_for('users.verification'))
     form = DepositForm()
     if form.validate_on_submit():
         try:
             current_user.money = current_user.money + form.amount.data
+            db.session.commit()
             flash('Your transaction has been processed.'
                   f' The amount of {form.amount.data} has been added to your personal account', 'success')
         except:
             flash('Your transaction has been denied', 'danger')
     return render_template('deposit.html', form=form, verified=True)
+
+
+@transactions.route("/history")
+@login_required
+def transaction_history():
+    if not current_user._get_current_object().validated:
+        flash('Your account is not activated', 'danger')
+        return redirect(url_for('users.verification'))
+    historySend = Transaction.query.filter_by(sender_id=current_user.email).all()
+    historyRecv = Transaction.query.filter_by(receiver_id=current_user.email).all()
+    return render_template('history.html', verified=True)
 
 
 def transaction_thread(email, amount, transaction_id, sender):
