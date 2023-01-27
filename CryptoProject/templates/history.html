@@ -29,6 +29,11 @@
                                 </td>
                                 <td>
                                     {{ h.amount }}
+                                    {% if h.currency == 'money' %}
+                                        $
+                                    {% else %}
+                                    {{ h.currency }}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {{ h.status }}
@@ -57,6 +62,11 @@
                                 </td>
                                 <td>
                                     {{ h.amount }}
+                                    {% if h.currency == 'money' %}
+                                        $
+                                    {% else %}
+                                    {{ h.currency }}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {{ h.status }}
