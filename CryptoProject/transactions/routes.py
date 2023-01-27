@@ -30,8 +30,8 @@ def new_transaction():
                                       amount=form.amount.data, status=Status.IN_PROGRESS.name)
             db.session.add(transaction)
             db.session.commit()
-
-            threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id)).start()
+            sender = current_user.email
+            threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id, sender)).start()
             redirect(url_for('users.logged'))
         else:
             k = keccak.new(digest_bits=256)
@@ -63,22 +63,20 @@ def deposit():
     return render_template('deposit.html', form=form, verified=True)
 
 
-def transaction_thread(email, amount, transaction_id):
-    print(email, amount)
+def transaction_thread(email, amount, transaction_id, sender):
     from run import app
-    time.sleep(10)
+    time.sleep(300)
     try:
         with app.app_context():
             user = User.query.filter_by(email=email).first()
             user.money = user.money + amount
-            current_user.money = current_user.money - amount
+            i_did_it = User.query.filter_by(email=sender).first()
+            i_did_it.money = i_did_it.money - amount
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
             transaction_done.status = Status.COMPLETED.name
             db.session.commit()
-            #flash('Your transaction has been completed!', 'success')
     except:
         with app.app_context():
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
             transaction_done.status = Status.DENIED.name
             db.session.commit()
-            #flash('Your transaction has been denied!', 'danger')
