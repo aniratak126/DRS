@@ -16,20 +16,17 @@ def home():
             return redirect(url_for('users.logged'))
         else:
             return redirect(url_for('users.verification'))
-    # defining key/request url
+
     key = "https://api.binance.com/api/v3/ticker/price?symbol="
     currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT", "XRPUSDT", "ETHUSDT"]
     j = 0
     cryptos = dict()
     path = os.path.join("bit.jpeg")
-    # requesting data from url
-    for i in currencies:
-        # completing API for request
+    for _ in currencies:
         url = key + currencies[j]
         data = requests.get(url)
         data = data.json()
         j = j + 1
-        #coin = f"\n{data['symbol']} price is {data['price']}"
         if data['symbol'] == "BTCUSDT":
             currency = "Bitcoin"
         elif data['symbol'] == "DOGEUSDT":
