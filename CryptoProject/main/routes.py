@@ -26,7 +26,7 @@ def home():
         data = requests.get(url)
         data = data.json()
         j = j + 1
-        coin = f"\n{data['symbol']} price is {data['price']}"
+        #coin = f"\n{data['symbol']} price is {data['price']}"
         if data['symbol'] == "BTCUSDT":
             currency = "Bitcoin"
         elif data['symbol'] == "DOGEUSDT":
@@ -37,5 +37,7 @@ def home():
             currency = "Ripple"
         elif data['symbol'] == "ETHUSDT":
             currency = "Ethereum"
-        cryptos[currency] = data["price"]
+        price = float(data['price'])
+        round(price, 1)
+        cryptos[currency] = price
     return render_template('home.html', title='Home', cryptos=cryptos)
