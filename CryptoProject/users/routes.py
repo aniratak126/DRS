@@ -119,6 +119,9 @@ def logged():
 @users.route("/balance")
 @login_required
 def balance():
-    current_balance = current_user.money
-    return render_template('balance.html', current_balance)
+    if not current_user._get_current_object().validated:
+        return redirect(url_for('users.verification'))
+    else:
+        current_balance = current_user.money
+        return render_template('balance.html', current_balance = current_balance, verified = True)
 
