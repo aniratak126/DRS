@@ -6,7 +6,7 @@ from flask import render_template, flash, Blueprint, redirect, url_for
 from flask_login import current_user, login_required
 from CryptoProject import db
 from CryptoProject.models import Transaction, Status, User
-from CryptoProject.transactions.forms import TransactionForm
+from CryptoProject.transactions.forms import TransactionForm, DepositForm
 
 transactions = Blueprint('transactions', __name__)
 
@@ -53,3 +53,20 @@ def new_transaction():
             db.session.commit()
             flash('Insufficient funds!', 'danger')
     return render_template('transaction.html', form=form, verified=True)
+
+
+@transactions.route("/deposit", methods=['GET', 'POST'])
+@login_required
+def deposit():
+    if not current_user._get_current_object().validated:
+        flash('Your account is not activated for you to be able to make a transaction!', 'danger')
+        return redirect(url_for('users.verification'))
+    form = DepositForm()
+    if form.validate_on_submit():
+        try:
+            current_user.money = current_user.money + form.amount.data
+            flash('Your transaction has been processed.'
+                  f' The amount of {form.amount.data} has been added to your personal account', 'success')
+        except:
+            flash('Your transaction has been denied', 'danger')
+    return render_template('deposit.html', form=form, verified=True)

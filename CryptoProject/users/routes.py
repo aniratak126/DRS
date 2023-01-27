@@ -111,3 +111,10 @@ def logged():
         verified = True
         # logika koda nekog
         return render_template('logged.html', verified=verified)
+
+
+@users.route("/balance")
+@login_required
+def balance():
+    current_balance = current_user.money
+    return render_template('balance.html', current_balance)

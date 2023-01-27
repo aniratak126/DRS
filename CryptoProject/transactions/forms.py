@@ -21,4 +21,14 @@ class TransactionForm(FlaskForm):
 
     def validate_amount(self, amount):
         if amount.data < 0.0:
-            raise ValidationError('Amount to deposit canno\'t be lower than 0!')
+            raise ValidationError('Amount you wish to transfer canno\'t be lower than 0!')
+
+
+class DepositForm(FlaskForm):
+    amount = FloatField('Amount u wish to deposit into your account',validators=[DataRequired()])
+
+    submit = SubmitField('Deposit')
+
+    def validate_amount(self, amount):
+        if amount.data < 0.0:
+            raise ValidationError('Amount you wish to deposit canno\'t be lower than 0!')
