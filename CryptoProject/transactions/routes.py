@@ -21,7 +21,8 @@ def new_transaction():
     form = TransactionForm()
     if form.validate_on_submit():
         if current_user.money >= form.amount.data:
-            flash('Your transaction is being processed! You will be notified when it has been completed', 'success')
+            flash('Your transaction is being processed! After 5 minutes check your Transaction History'
+                  ' for information about your transaction', 'success')
             k = keccak.new(digest_bits=256)
             k.update(
                 bytes(current_user.email, encoding='utf-8') + bytes(form.email.data, encoding='utf-8') + struct.pack(

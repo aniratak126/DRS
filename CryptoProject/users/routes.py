@@ -4,6 +4,7 @@ from CryptoProject import db, bcrypt
 from CryptoProject.models import User
 from CryptoProject.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm, VerificationForm)
 
+
 users = Blueprint('users', __name__)
 
 
@@ -120,3 +121,4 @@ def logged():
 def balance():
     current_balance = current_user.money
     return render_template('balance.html', current_balance)
+
