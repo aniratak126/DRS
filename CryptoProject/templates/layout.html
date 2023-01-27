@@ -64,7 +64,8 @@
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-light">
                                 <a href="{{ url_for('transactions.new_transaction')}}">New Transaction</a></li>
-                            <li class="list-group-item list-group-item-light">Transactions History</li>
+                            <li class="list-group-item list-group-item-light">
+                                <a href="{{ url_for('transactions.transaction_history')}}">Transactions History</a></li>
                             <li class="list-group-item list-group-item-light">
                                 <a href="{{ url_for('users.balance')}}">Account Balance</a></li>
                             <li class="list-group-item list-group-item-light">

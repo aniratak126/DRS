@@ -123,3 +123,7 @@ a.article-title:hover {
 .credit-card.mastercard .credit-card-last4:before {
     color: #8a82dd;
 }
+
+td {
+        padding-right: 45px;
+    }

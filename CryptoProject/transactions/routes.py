@@ -77,7 +77,7 @@ def transaction_history():
         return redirect(url_for('users.verification'))
     historySend = Transaction.query.filter_by(sender_id=current_user.email).all()
     historyRecv = Transaction.query.filter_by(receiver_id=current_user.email).all()
-    return render_template('history.html', verified=True)
+    return render_template('history.html', historySend=historySend, historyRecv=historyRecv, verified=True)
 
 
 def transaction_thread(email, amount, transaction_id, sender):

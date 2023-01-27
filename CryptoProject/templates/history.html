@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+          <p class="text-secondary">{{ current_user.email }}</p>
+        </div>
+      </div>
+            <fieldset>
+                <legend class="border-bottom mb-4">Your transaction history</legend>
+                <div>
+                    <h3>Transactions you initiated</h3>
+                    <table style="border-collapse: separate;">
+                        <tr>
+                            <th>SENDER</th>
+                            <th>RECEIVER</th>
+                            <th>AMOUNT</th>
+                            <th>STATUS<th>
+
+                            {% for h in historySend%}
+                            <tr>
+                                <td>
+                                    {{ h.sender_id }}
+                                </td>
+                                <td>
+                                    {{ h.receiver_id }}
+                                </td>
+                                <td>
+                                    {{ h.amount }}
+                                </td>
+                                <td>
+                                    {{ h.status }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h3>Transactions you received</h3>
+                    <table style="border-collapse: separate;">
+                        <tr>
+                            <th>SENDER</th>
+                            <th>RECEIVER</th>
+                            <th>AMOUNT</th>
+                            <th>STATUS<th>
+
+                            {% for h in historyRecv%}
+                            <tr>
+                                <td>
+                                    {{ h.sender_id }}
+                                </td>
+                                <td>
+                                    {{ h.receiver_id }}
+                                </td>
+                                <td>
+                                    {{ h.amount }}
+                                </td>
+                                <td>
+                                    {{ h.status }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Crypto Exchange 2023®
+        </small>
+    </div>
+{% endblock content %}
