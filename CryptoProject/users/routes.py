@@ -123,5 +123,5 @@ def balance():
         return redirect(url_for('users.verification'))
     else:
         current_balance = current_user.money
-        return render_template('balance.html', current_balance = current_balance, verified = True)
+        return render_template('balance.html', current_balance=current_balance, verified=True)
 
