@@ -129,3 +129,4 @@ def balance():
         return render_template('balance.html', current_money=current_money, current_bitcoin=current_bitcoin,
                                current_dogecoin=current_dogecoin, current_litecoin=current_litecoin,
                                current_ripple=current_ripple, current_ethereum=current_ethereum, verified=True)
+
