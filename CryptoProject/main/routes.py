@@ -1,3 +1,5 @@
+import os.path
+
 from flask import render_template, redirect, Blueprint, url_for, flash
 from flask_login import current_user
 import json
@@ -19,6 +21,7 @@ def home():
     currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT", "XRPUSDT", "ETHUSDT"]
     j = 0
     cryptos = dict()
+    path = os.path.join("bit.jpeg")
     # requesting data from url
     for i in currencies:
         # completing API for request
@@ -40,4 +43,4 @@ def home():
         price = float(data['price'])
         round(price, 1)
         cryptos[currency] = price
-    return render_template('home.html', title='Home', cryptos=cryptos)
+    return render_template('home.html', title='Home', cryptos=cryptos, path=path)
