@@ -48,7 +48,7 @@ def new_transaction():
                     "<f", form.amount.data) + bytes(randint(1, 99999)))
             transaction_id = k.hexdigest()
             transaction = Transaction(id=transaction_id, sender_id=current_user.email, receiver_id=form.email.data,
-                                      amount=form.amount.data, status=Status.IN_PROGRESS.name, currency=helpvar)
+                                      amount=form.amount.data, status=Status.IN_PROGRESS.name, currency=helpvar2)
             db.session.add(transaction)
             db.session.commit()
             sender = current_user.email
@@ -63,7 +63,7 @@ def new_transaction():
                 bytes(current_user.email, encoding='utf-8') + bytes(form.email.data, encoding='utf-8') + struct.pack(
                     "<f", form.amount.data) + bytes(randint(1, 99999)))
             transaction = Transaction(id=k.hexdigest(), sender_id=current_user.email, receiver_id=form.email.data,
-                                      amount=form.amount.data, status=Status.DENIED.name, currency=helpvar)
+                                      amount=form.amount.data, status=Status.DENIED.name, currency=helpvar2)
             db.session.add(transaction)
             db.session.commit()
             flash('Insufficient funds!', 'danger')
