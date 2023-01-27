@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, FloatField
+from wtforms import StringField, SubmitField, FloatField, SelectField
 from wtforms.validators import DataRequired, Email, ValidationError
 from flask_login import current_user
 from CryptoProject.models import User
@@ -10,6 +10,9 @@ class TransactionForm(FlaskForm):
                         validators=[DataRequired(), Email()])
     amount = FloatField('Amount u wish to transfer',
                         validators=[DataRequired()])
+    currency = SelectField('Select Currency', choices=[('money', 'DOLLAR'), ('bitcoin', 'BTC'), ('dogecoin', 'DOGE'),
+                                                       ('litecoin', 'LTC'), ('ripple', 'RIPPLE'), ('ethereum', 'ETH')],
+                           validators=[DataRequired()])
     submit = SubmitField('Transfer')
 
     def validate_email(self, email):

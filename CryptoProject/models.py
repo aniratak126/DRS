@@ -21,8 +21,13 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(25), nullable=False)
     cellphone = db.Column(db.Integer, unique=True, nullable=False)
     validated = db.Column(db.Boolean, nullable=False, default=False)
-    money = db.Column(db.Float, nullable=False, default=0.0)
     transactions = db.relationship('Transaction', backref='creator', lazy=True)
+    money = db.Column(db.Float, nullable=False, default=0.0)
+    bitcoin = db.Column(db.Float, nullable=False, default=0.0)
+    dogecoin = db.Column(db.Float, nullable=False, default=0.0)
+    litecoin = db.Column(db.Float, nullable=False, default=0.0)
+    ripple = db.Column(db.Float, nullable=False, default=0.0)
+    ethereum = db.Column(db.Float, nullable=False, default=0.0)
 
 
 class Transaction(db.Model):
@@ -30,6 +35,7 @@ class Transaction(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     receiver_id = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Float, nullable=False)
+    currency = db.Column(db.String, nullable=False)
     status = db.Column(db.String(20), nullable=False)
 
 

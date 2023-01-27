@@ -45,7 +45,6 @@ def login():
 
 
 @users.route("/logout")
-@login_required  # dodao, nzm da l treba
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
@@ -98,8 +97,7 @@ def verification():
                     form.name.data == current_user.name and form.expires.data == "02/23" and form.ccv.data == "123":
                 current_user.validated = True
                 db.session.commit()
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else render_template('logged.html')
+                return redirect(url_for('users.logged'))
             else:
                 flash('Wrong credentials! Try again!', 'danger')
         else:
@@ -122,6 +120,12 @@ def balance():
     if not current_user._get_current_object().validated:
         return redirect(url_for('users.verification'))
     else:
-        current_balance = current_user.money
-        return render_template('balance.html', current_balance=current_balance, verified=True)
-
+        current_money = current_user.money
+        current_bitcoin = current_user.bitcoin
+        current_dogecoin = current_user.dogecoin
+        current_litecoin = current_user.litecoin
+        current_ripple = current_user.ripple
+        current_ethereum = current_user.ethereum
+        return render_template('balance.html', current_money=current_money, current_bitcoin=current_bitcoin,
+                               current_dogecoin=current_dogecoin, current_litecoin=current_litecoin,
+                               current_ripple=current_ripple, current_ethereum=current_ethereum, verified=True)

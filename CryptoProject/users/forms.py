@@ -21,7 +21,7 @@ class RegistrationForm(FlaskForm):
                           validators=[DataRequired(), Length(min=6, max=60)])
     city = StringField('City',
                        validators=[DataRequired(), Length(min=2, max=25)])
-    state = StringField('State',
+    state = StringField('Country',
                         validators=[DataRequired(), Length(min=2, max=25)])
     cellphone = TelField('Cellphone',
                          validators=[DataRequired(), Length(min=9, max=30)])
@@ -67,7 +67,7 @@ class UpdateAccountForm(FlaskForm):
                           validators=[DataRequired(), Length(min=6, max=60)])
     city = StringField('City',
                        validators=[DataRequired(), Length(min=2, max=25)])
-    state = StringField('State',
+    state = StringField('Country',
                         validators=[DataRequired(), Length(min=2, max=25)])
     cellphone = TelField('Cellphone',
                          validators=[DataRequired(), Length(min=9, max=30)])
