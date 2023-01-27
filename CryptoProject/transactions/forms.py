@@ -18,6 +18,8 @@ class TransactionForm(FlaskForm):
             raise ValidationError('That user doesn\'t exist. Please check the spelling or choose a different one.')
         elif user.email == current_user._get_current_object().email:
             raise ValidationError('You can\'t deposit to your own account!')
+        elif not user.validated:
+            raise ValidationError('The user account you have selected is not activated')
 
     def validate_amount(self, amount):
         if amount.data < 0.0:
@@ -25,7 +27,7 @@ class TransactionForm(FlaskForm):
 
 
 class DepositForm(FlaskForm):
-    amount = FloatField('Amount u wish to deposit into your account',validators=[DataRequired()])
+    amount = FloatField('Amount u wish to deposit into your account', validators=[DataRequired()])
 
     submit = SubmitField('Deposit')
 

@@ -31,8 +31,9 @@ def new_transaction():
             db.session.add(transaction)
             db.session.commit()
             sender = current_user.email
+
             threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id, sender)).start()
-            redirect(url_for('users.logged'))
+
         else:
             k = keccak.new(digest_bits=256)
             k.update(
@@ -65,15 +66,18 @@ def deposit():
 
 def transaction_thread(email, amount, transaction_id, sender):
     from run import app
-    time.sleep(300)
+    time.sleep(20)
     try:
         with app.app_context():
             user = User.query.filter_by(email=email).first()
-            user.money = user.money + amount
             i_did_it = User.query.filter_by(email=sender).first()
-            i_did_it.money = i_did_it.money - amount
             transaction_done = Transaction.query.filter_by(id=transaction_id).first()
-            transaction_done.status = Status.COMPLETED.name
+            if i_did_it.money - amount < 0:
+                transaction_done.status = Status.DENIED.name
+            else:
+                user.money = user.money + amount
+                i_did_it.money = i_did_it.money - amount
+                transaction_done.status = Status.COMPLETED.name
             db.session.commit()
     except:
         with app.app_context():
