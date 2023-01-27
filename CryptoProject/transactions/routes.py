@@ -1,4 +1,5 @@
 import struct
+import threading
 import time
 from random import randint
 from Crypto.Hash import keccak
@@ -10,7 +11,6 @@ from CryptoProject.transactions.forms import TransactionForm, DepositForm
 
 transactions = Blueprint('transactions', __name__)
 
-
 @transactions.route("/new_transaction", methods=['GET', 'POST'])
 @login_required
 def new_transaction():
@@ -18,7 +18,6 @@ def new_transaction():
         flash('Your account is not activated for you to be able to make a transaction!', 'danger')
         return redirect(url_for('users.verification'))
     form = TransactionForm()
-    current_user.money = 1000
     if form.validate_on_submit():
         if current_user.money >= form.amount.data:
             flash('Your transaction is being processed! You will be notified when it has been completed', 'success')
@@ -29,19 +28,11 @@ def new_transaction():
             transaction_id = k.hexdigest()
             transaction = Transaction(id=transaction_id, sender_id=current_user.email, receiver_id=form.email.data,
                                       amount=form.amount.data, status=Status.IN_PROGRESS.name)
-
             db.session.add(transaction)
             db.session.commit()
 
-            time.sleep(6)
-
-            user = User.query.filter_by(email=form.email.data).first()
-            user.money = user.money + form.amount.data
-            current_user.money = current_user.money - form.amount.data
-            transaction_done = Transaction.query.filter_by(id=transaction_id).first()
-            transaction_done.status = Status.COMPLETED.name
-            db.session.commit()
-            flash('Your transaction has been completed!', 'success')
+            threading.Thread(target=transaction_thread, args=(form.email.data, form.amount.data, transaction_id)).start()
+            redirect(url_for('users.logged'))
         else:
             k = keccak.new(digest_bits=256)
             k.update(
@@ -70,3 +61,24 @@ def deposit():
         except:
             flash('Your transaction has been denied', 'danger')
     return render_template('deposit.html', form=form, verified=True)
+
+
+def transaction_thread(email, amount, transaction_id):
+    print(email, amount)
+    from run import app
+    time.sleep(10)
+    try:
+        with app.app_context():
+            user = User.query.filter_by(email=email).first()
+            user.money = user.money + amount
+            current_user.money = current_user.money - amount
+            transaction_done = Transaction.query.filter_by(id=transaction_id).first()
+            transaction_done.status = Status.COMPLETED.name
+            db.session.commit()
+            #flash('Your transaction has been completed!', 'success')
+    except:
+        with app.app_context():
+            transaction_done = Transaction.query.filter_by(id=transaction_id).first()
+            transaction_done.status = Status.DENIED.name
+            db.session.commit()
+            #flash('Your transaction has been denied!', 'danger')
