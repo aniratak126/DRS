@@ -6,7 +6,7 @@
     <a style="text-align: center;" href="{{ url_for('users.register') }}"><h1>Join us today!</h1></a>
  <div class="content-section" >
       <div class="media">
-        <div class="media-body">
+        <div class="media-body" style="text-align: center;">
           <h2 class="account-heading">Current market prices</h2>
         </div>
       </div>
@@ -16,7 +16,7 @@
                     <ul>
                         {% for keys, values in cryptos.items() %}
 
-                        <li><h5>{{ keys }}: {{ values }}</h5> </li>
+                        <li><h5>{{ keys }}: {{ values }}$</h5> </li>
                         {% endfor %}
                     </ul>
 
