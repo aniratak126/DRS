@@ -26,7 +26,7 @@ class TransactionForm(FlaskForm):
 
     def validate_amount(self, amount):
         if amount.data < 0.0:
-            raise ValidationError('Amount you wish to transfer canno\'t be lower than 0!')
+            raise ValidationError('Amount you wish to transfer cannot be lower than 0!')
 
 
 class DepositForm(FlaskForm):
@@ -36,23 +36,23 @@ class DepositForm(FlaskForm):
 
     def validate_amount(self, amount):
         if amount.data < 0.0:
-            raise ValidationError('Amount you wish to deposit canno\'t be lower than 0!')
+            raise ValidationError('Amount you wish to deposit cannot be lower than 0!')
 
 
 class CryptoChangeForm(FlaskForm):
     amount = FloatField('Amount to change', validators=[DataRequired()])
-    first_currency = SelectField('Select Currency u wish to convert', choices=[('money', 'DOLLAR'), ('bitcoin', 'BTC'), ('dogecoin', 'DOGE'),
-                                                       ('litecoin', 'LTC'), ('ripple', 'RIPPLE'), ('ethereum', 'ETH')],
-                                validators=[DataRequired()])
-
-    second_currency = SelectField('Select Currency u wish to convert into',
+    first_currency = SelectField('Select Currency u wish to convert',
                                  choices=[('money', 'DOLLAR'), ('bitcoin', 'BTC'), ('dogecoin', 'DOGE'),
                                           ('litecoin', 'LTC'), ('ripple', 'RIPPLE'), ('ethereum', 'ETH')],
                                  validators=[DataRequired()])
 
-    submit = SubmitField('Convert')
+    second_currency = SelectField('Select Currency u wish to convert into',
+                                  choices=[('money', 'DOLLAR'), ('bitcoin', 'BTC'), ('dogecoin', 'DOGE'),
+                                           ('litecoin', 'LTC'), ('ripple', 'RIPPLE'), ('ethereum', 'ETH')],
+                                  validators=[DataRequired()])
 
+    submit = SubmitField('Convert')
 
     def validate_amount(self, amount):
         if amount.data < 0.0:
-            raise ValidationError('Amount you wish to deposit canno\'t be lower than 0!')
+            raise ValidationError('Amount you wish to deposit cannot be lower than 0!')

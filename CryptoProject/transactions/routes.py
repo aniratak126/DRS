@@ -5,7 +5,7 @@ from random import randint
 
 import requests
 from Crypto.Hash import keccak
-from flask import render_template, flash, Blueprint, redirect, url_for, message_flashed
+from flask import render_template, flash, Blueprint, redirect, url_for
 from flask_login import current_user, login_required
 from CryptoProject import db
 from CryptoProject.models import Transaction, Status, User
@@ -108,7 +108,8 @@ def convert():
             if form.first_currency.data == 'money':
                 helpvar = current_user.money
                 if helpvar >= form.amount.data:
-                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] * form.amount.data
+                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] \
+                                * form.amount.data
                     current_user.money = current_user.money - form.amount.data
                 else:
                     flash('Insufficient funds!', 'danger')
@@ -116,7 +117,8 @@ def convert():
             elif form.first_currency.data == 'bitcoin':
                 helpvar = current_user.bitcoin
                 if helpvar >= form.amount.data:
-                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] * form.amount.data
+                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] \
+                                * form.amount.data
                     current_user.bitcoin = current_user.bitcoin - form.amount.data
                 else:
                     flash('Insufficient funds!', 'danger')
@@ -124,7 +126,8 @@ def convert():
             elif form.first_currency.data == 'dogecoin':
                 helpvar = current_user.dogecoin
                 if helpvar >= form.amount.data:
-                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] * form.amount.data
+                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] \
+                                * form.amount.data
                     current_user.dogecoin = current_user.dogecoin - form.amount.data
                 else:
                     flash('Insufficient funds!', 'danger')
@@ -132,7 +135,8 @@ def convert():
             elif form.first_currency.data == 'litecoin':
                 helpvar = current_user.litecoin
                 if helpvar >= form.amount.data:
-                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] * form.amount.data
+                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] \
+                                * form.amount.data
                     current_user.litecoin = current_user.litecoin - form.amount.data
                 else:
                     flash('Insufficient funds!', 'danger')
@@ -140,7 +144,8 @@ def convert():
             elif form.first_currency.data == 'ripple':
                 helpvar = current_user.ripple
                 if helpvar >= form.amount.data:
-                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] * form.amount.data
+                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] \
+                                * form.amount.data
                     current_user.ripple = current_user.ripple - form.amount.data
                 else:
                     flash('Insufficient funds!', 'danger')
@@ -148,7 +153,8 @@ def convert():
             else:
                 helpvar = current_user.ethereum
                 if helpvar >= form.amount.data:
-                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] * form.amount.data
+                    new_value = cryptos[form.first_currency.data] / cryptos[form.second_currency.data] \
+                                * form.amount.data
                     current_user.ethereum = current_user.ethereum - form.amount.data
                 else:
                     flash('Insufficient funds!', 'danger')
@@ -257,6 +263,8 @@ def transaction_thread(email, amount, transaction_id, sender, helpvar):
             transaction_done.currency = helpvar
             db.session.commit()
 
+
+# noinspection PyUnboundLocalVariable
 def get_cryptos():
     key = "https://api.binance.com/api/v3/ticker/price?symbol="
     currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT", "XRPUSDT", "ETHUSDT"]
