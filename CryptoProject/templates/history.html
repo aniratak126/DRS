@@ -301,14 +301,14 @@ function myFunction2() {
         {%else%}
         <div class="container">
             <h3>Transactions you initiated</h3>
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
-            <table id="myTable">
+           <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
+            <table id="myTable" class="table table-hover">
 
                 <tr>
-                    <th onclick="sortTable(0)">SENDER</th>
-                    <th onclick="sortTable(1)" >RECEIVER</th>
-                    <th onclick="sortTable(2)" >AMOUNT</th>
-                    <th onclick="sortTable(3)" >STATUS</th>
+                    <th onclick="sortTable(0)" scope="col">SENDER</th>
+                    <th onclick="sortTable(1)" scope="col">RECEIVER</th>
+                    <th onclick="sortTable(2)" scope="col">AMOUNT</th>
+                    <th onclick="sortTable(3)" scope="col">STATUS</th>
                 </tr>
 
                 {% for h in historySend%}
@@ -342,13 +342,13 @@ function myFunction2() {
             {%else%}
 
             <h3>Transactions you received</h3>
-              <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search...">
-            <table id="myTable2">
+            <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search...">
+            <table id="myTable2" class="table table-hover">
                 <tr>
-                    <th onclick="sortTable2(0)">SENDER</th>
-                    <th onclick="sortTable2(1)">RECEIVER</th>
-                    <th onclick="sortTable2(2)">AMOUNT</th>
-                    <th onclick="sortTable2(3)">STATUS</th>
+                    <th onclick="sortTable2(0)" scope="col">SENDER</th>
+                    <th onclick="sortTable2(1)" scope="col">RECEIVER</th>
+                    <th onclick="sortTable2(2)" scope="col">AMOUNT</th>
+                    <th onclick="sortTable2(3)" scope="col">STATUS</th>
                 </tr>
                 {% for h in historyRecv%}
                 <tr>
