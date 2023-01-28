@@ -7,7 +7,7 @@ from flask import render_template, flash, Blueprint, redirect, url_for
 from flask_login import current_user, login_required
 from CryptoProject import db
 from CryptoProject.models import Transaction, Status, User
-from CryptoProject.transactions.forms import TransactionForm, DepositForm
+from CryptoProject.transactions.forms import TransactionForm, DepositForm, CryptoChangeForm
 
 transactions = Blueprint('transactions', __name__)
 
@@ -88,6 +88,16 @@ def deposit():
     return render_template('deposit.html', form=form, verified=True)
 
 
+@transactions.route("/convert", methods=['GET', 'POST'])
+@login_required
+def convert():
+    if not current_user._get_current_object().validated:
+        flash('Your account is not activated', 'danger')
+        return redirect(url_for('users.verification'))
+    form = CryptoChangeForm()
+    return render_template('convert.html', form=form, verified=True)
+
+
 @transactions.route("/history")
 @login_required
 def transaction_history():
@@ -96,12 +106,15 @@ def transaction_history():
         return redirect(url_for('users.verification'))
     historySend = Transaction.query.filter_by(sender_id=current_user.email).all()
     historyRecv = Transaction.query.filter_by(receiver_id=current_user.email).all()
+    for h in historyRecv:
+        if h.status == 'IN_PROGRESS' or h.status == 'DENIED':
+            historyRecv.remove(h)
     return render_template('history.html', historySend=historySend, historyRecv=historyRecv, verified=True)
 
 
 def transaction_thread(email, amount, transaction_id, sender, helpvar):
     from run import app
-    time.sleep(2)
+    time.sleep(10)
     try:
         with app.app_context():
             user = User.query.filter_by(email=email).first()

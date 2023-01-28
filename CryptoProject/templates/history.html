@@ -10,6 +10,9 @@
       </div>
             <fieldset>
                 <legend class="border-bottom mb-4">Your transaction history</legend>
+                {%if not historySend%}
+                <div></div>
+                {%else%}
                 <div>
                     <h3>Transactions you initiated</h3>
                     <table style="border-collapse: separate;">
@@ -43,6 +46,10 @@
                         </tr>
                     </table>
                 </div>
+                {%endif%}
+                {%if not historySend%}
+                <div></div>
+                {%else%}
                 <div>
                     <h3>Transactions you received</h3>
                     <table style="border-collapse: separate;">
@@ -76,6 +83,7 @@
                         </tr>
                     </table>
                 </div>
+                {%endif%}
             </fieldset>
     </div>
     <div class="border-top pt-3">
