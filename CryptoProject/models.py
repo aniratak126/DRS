@@ -8,7 +8,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# NOVA KLASA USER
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -43,13 +42,3 @@ class Status(Enum):
     IN_PROGRESS = 1
     COMPLETED = 2
     DENIED = 3
-
-
-'''
-!!! NE BRISI OVO !!!
-class Post(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
-'''

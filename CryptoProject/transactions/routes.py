@@ -2,6 +2,7 @@ import struct
 import threading
 import time
 from random import randint
+import os.path
 
 import requests
 from Crypto.Hash import keccak
@@ -103,7 +104,7 @@ def convert():
     new_value = 0
     if form.validate_on_submit():
         if form.first_currency.data == form.second_currency.data:
-            flash('You canno\'t convert the same currency!', 'danger')
+            flash('You cannot convert the same currency!', 'danger')
         else:
             if form.first_currency.data == 'money':
                 helpvar = current_user.money
@@ -159,7 +160,6 @@ def convert():
                 else:
                     flash('Insufficient funds!', 'danger')
                     x += 1
-
             if form.second_currency.data == 'money':
                 current_user.money = current_user.money + new_value
             elif form.second_currency.data == 'bitcoin':
@@ -172,11 +172,10 @@ def convert():
                 current_user.ripple = current_user.ripple + new_value
             elif form.second_currency.data == 'ethereum':
                 current_user.ethereum = current_user.ethereum + new_value
-
             db.session.commit()
             if x == 0:
                 flash('You successfully converted!', 'success')
-    return render_template('convert.html', form=form, verified=True)
+    return render_template('convert.html', form=form, verified=True, cryptos=get_cryptos())
 
 
 @transactions.route("/history")

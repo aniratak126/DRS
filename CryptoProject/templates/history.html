@@ -336,10 +336,10 @@ function myFunction2() {
 
             </table>
 
-            {%endif%}
-            {%if not historyRecv%}
+            {% endif %}
+            {% if not historyRecv %}
             <div></div>
-            {%else%}
+            {% else %}
 
             <h3>Transactions you received</h3>
             <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search...">
@@ -372,8 +372,7 @@ function myFunction2() {
                 </tr>
                 {% endfor %}
             </table>
-
-            {%endif%}
+            {% endif %}
         </div>
     </fieldset>
 </div>
