@@ -22,7 +22,6 @@ def home():
     currencies = ["BTCUSDT", "DOGEUSDT", "LTCUSDT", "XRPUSDT", "ETHUSDT"]
     j = 0
     cryptos = dict()
-    path = os.path.join("bit.jpeg")
     for _ in currencies:
         url = key + currencies[j]
         data = requests.get(url)
@@ -41,4 +40,4 @@ def home():
         price = float(data['price'])
         round(price, 1)
         cryptos[currency] = price
-    return render_template('home.html', title='Home', cryptos=cryptos, path=path)
+    return render_template('home.html', title='Home', cryptos=cryptos)
