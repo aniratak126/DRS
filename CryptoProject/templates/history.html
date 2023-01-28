@@ -136,30 +136,39 @@ function sortTable2(n) {
 
 function myFunction() {
   // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
+  console.log("udje u fju");
+  var input, filter, table, tr, td, i, txtValue, brisi1, brisi2, brisi3, brisi4;
   input = document.getElementById("myInput");
   filter = input.value;
+  console.log(filter);
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
+  for (i = 1; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[0];
     if (td) {
       txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      console.log(txtValue.indexOf(filter));
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        brisi1 = true;
+
       } else {
-        tr[i].style.display = "none";
+          brisi1 = false;
+
       }
     }
     td = tr[i].getElementsByTagName("td")[1];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+      brisi2 = true;
+
       } else {
-        tr[i].style.display = "none";
+       brisi2 = false;
+
+
       }
     }
 
@@ -167,9 +176,12 @@ function myFunction() {
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        brisi3 = true;
+
       } else {
-        tr[i].style.display = "none";
+       brisi3 = false;
+
+
       }
     }
 
@@ -177,11 +189,23 @@ function myFunction() {
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        brisi4 = true;
+
       } else {
-        tr[i].style.display = "none";
+       brisi4 = false;
+
+
       }
     }
+
+    if(brisi1 || brisi2 || brisi3 || brisi4){
+        console.log("ne brise");
+        tr[i].style.display = "";
+    }
+    else{
+        tr[i].style.display = "none";
+    }
+
   }
 }
 
@@ -189,30 +213,39 @@ function myFunction() {
 
 function myFunction2() {
   // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
+  console.log("udje u fju2");
+  var input, filter, table, tr, td, i, txtValue, brisi1, brisi2, brisi3, brisi4;
   input = document.getElementById("myInput2");
   filter = input.value;
+  console.log(filter);
   table = document.getElementById("myTable2");
   tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
+  for (i = 1; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[0];
     if (td) {
       txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      console.log(txtValue.indexOf(filter));
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        brisi1 = true;
+
       } else {
-        tr[i].style.display = "none";
+          brisi1 = false;
+
       }
     }
     td = tr[i].getElementsByTagName("td")[1];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+      brisi2 = true;
+
       } else {
-        tr[i].style.display = "none";
+       brisi2 = false;
+
+
       }
     }
 
@@ -220,9 +253,12 @@ function myFunction2() {
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        brisi3 = true;
+
       } else {
-        tr[i].style.display = "none";
+       brisi3 = false;
+
+
       }
     }
 
@@ -230,11 +266,23 @@ function myFunction2() {
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        brisi4 = true;
+
       } else {
-        tr[i].style.display = "none";
+       brisi4 = false;
+
+
       }
     }
+
+    if(brisi1 || brisi2 || brisi3 || brisi4){
+        console.log("ne brise");
+        tr[i].style.display = "";
+    }
+    else{
+        tr[i].style.display = "none";
+    }
+
   }
 }
 
